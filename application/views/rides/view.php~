@@ -1,0 +1,4 @@
+<h1><?php echo $rides_item['departure'] ?> - <?php echo $rides_item['destination'] ?></h1>
+<?php
+echo $rides_item['description'];
+?>

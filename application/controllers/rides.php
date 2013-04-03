@@ -1,0 +1,103 @@
+<?php
+class Rides extends CI_Controller {
+
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->model('rides_model');
+	}
+
+	public function index()
+	{
+		$data['rides'] = $this->rides_model->get_rides();
+		$data['title'] = 'Rides';
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('rides/index', $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function view($id)
+	{
+		$data['rides_item'] = $this->rides_model->get_rides($id);
+
+		if (empty($data['rides_item']))
+		{
+			show_404();
+		}
+
+		$data['title'] = $data['rides_item']['departure'].' - '.$data['rides_item']['destination'];
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('rides/view', $data);
+		$this->load->view('templates/footer');
+	}
+	public function create()
+	{
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		$this->load->library('googlemaps');
+
+		$config['center'] = '-25.28286779151105, -57.634921073913574';
+		$config['zoom'] = 'auto';
+		$config['places'] = TRUE;
+		$config['placesAutocompleteInputID'] = 'myPlaceTextBox';
+		$config['placesAutocompleteBoundsMap'] = TRUE;
+		$config['placesAutocompleteOnChange'] = 'alert(\'You selected a place\');';
+		$config['onclick'] = 'alert(\'You just clicked at: \' + event.latLng.lat() + \', \' + event.latLng.lng());';
+		$this->googlemaps->initialize($config);
+		$data['map'] = $this->googlemaps->create_map();
+	
+		$data['title'] = 'Create a new Ride';
+	
+		$this->form_validation->set_rules('departure', 'text', 'required');
+		$this->form_validation->set_rules('destination', 'text', 'required');
+	
+		if ($this->form_validation->run() === FALSE)
+		{
+			$this->load->view('templates/header', $data);	
+			$this->load->view('rides/create');
+			$this->load->view('templates/footer');
+		
+		}
+		else
+		{
+			$this->rides_model->set_rides();
+			$this->load->view('rides/success');
+		}
+	}
+
+	public function maps()
+	{
+		$this->load->library('googlemaps');
+
+		$config['center'] = '37.4419, -122.1419';
+		$config['zoom'] = 'auto';
+		$this->googlemaps->initialize($config);
+
+		$marker = array();
+		$marker['position'] = '37.429, -122.1519';
+		$marker['infowindow_content'] = '1 - Hello World!';
+		$marker['icon'] = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|9999FF|000000';
+		$this->googlemaps->add_marker($marker);
+
+		$marker = array();
+		$marker['position'] = '37.409, -122.1319';
+		$marker['draggable'] = TRUE;
+		$marker['animation'] = 'DROP';
+		$this->googlemaps->add_marker($marker);
+
+		$marker = array();
+		$marker['position'] = '37.449, -122.1419';
+		$marker['onclick'] = 'alert("You just clicked me!!")';
+		$this->googlemaps->add_marker($marker);
+
+		$data['map'] = $this->googlemaps->create_map();
+
+		$this->load->view('rides/maps', $data);
+
+
+	}
+}
+
+?>

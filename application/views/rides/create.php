@@ -1,0 +1,64 @@
+<?php echo $map['js']; ?>
+<script>
+function changeDatesType(){
+
+var value = $('input:checkbox[name=recurrency]:checked').val();
+
+if(value == 1){
+	$('#dates').hide();
+	$('#period').show();
+} else {
+	$('#dates').show();
+	$('#period').hide();
+
+}
+
+//alert('23qweasdsa'+$('input:checkbox[name=recurrency]:checked').val());
+}
+</script>
+<h2>Crear una Ruta</h2>
+
+<?php echo validation_errors(); ?>
+
+<?php echo form_open('rides/create') ?>
+
+	Sale  <br /> 
+	<input type="input" name="from_city" placeholder="Ciudad" />
+	<input type="input" name="from_zone" placeholder="Barrio (opcional)" />
+	<input type="input" name="from_street" placeholder="Calle (o referencia)" /><br />
+	<div style="width:400px;"><?php echo $map['html']; ?></div><br />
+	Para <br /> 
+	<input type="input" name="to_city" placeholder="Ciudad" />
+	<input type="input" name="to_zone" placeholder="Barrio (opcional)" />
+	<input type="input" name="to_street" placeholder="Calle (o referencia)" /><br />
+Horario Ida: <br />	
+<input type="input" name="dep_time" /><br />
+Horario Vuelta: <br />	
+<input type="input" name="arr_time" /><br />
+
+<input type="checkbox" name="recurrency" id="recurrency" onchange="changeDatesType();" value="1" /> <label for="recurrency">Periodico </label><br />
+<div id="dates">
+<label for="date">Fecha (s) </label> <br /> 
+<input type="datetime" name="date[]" /><br />
+<input type="datetime" name="date[]" /><br />
+<input type="datetime" name="date[]" /><br />
+</div>
+<div id="period" style="display: none;">
+Dias de la semana.<br />
+<input type="checkbox" name="mon" id="mon" value="1" /> <label for="mon">Lunes</label><br />
+<input type="checkbox" name="tue" id="tue" value="1" /> <label for="tue">Martes</label><br />
+<input type="checkbox" name="wed" id="wed" value="1" /> <label for="wed">Miercoles</label><br />
+<input type="checkbox" name="thu" id="thu" value="1" /> <label for="thu">Jueves</label><br />
+<input type="checkbox" name="fri" id="fri" value="1" /> <label for="fri">Viernes</label><br />
+<input type="checkbox" name="sat" id="sat" value="1" /> <label for="sat">Sabado</label><br />
+<input type="checkbox" name="sun" id="sun" value="1" /> <label for="sun">Domingo</label><br />
+</div>
+	<label for="description">Comentarios</label><br /> 
+	<textarea name="description"></textarea><br />
+Puedo Llevar:<br />
+<input type="checkbox" name="bike" id="bike" value="1" /> <label for="bike">Bicicleta</label><br />
+<input type="checkbox" name="bag" id="bag" value="1" /> <label for="bag">Equipaje</label><br />
+	
+	<input type="submit" name="submit" value="Crear" /> 
+
+</form>
