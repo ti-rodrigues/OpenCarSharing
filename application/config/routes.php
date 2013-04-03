@@ -41,14 +41,17 @@
 $route['default_controller'] = "welcome";
 $route['404_override'] = '';
 
-
-
 $route['news/create'] = 'news/create';
 $route['news/rss'] = 'news/rss';
 $route['news/(:any)'] = 'news/view/$1';
 $route['news'] = 'news';
+$route['rides/create'] = 'rides/create';
+$route['rides/maps'] = 'rides/maps';
+$route['rides/(:any)'] = 'rides/view/$1';
+$route['rides'] = 'rides';
 $route['(:any)'] = 'pages/view/$1';
-$route['default_controller'] = 'pages/view';
+$route['users/(:any)'] = 'users/$1';
+
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
